@@ -110,10 +110,10 @@
     <nav>
         <div class="logo" onclick="showSection('home')">Code<span>Lab</span></div>
         <ul>
-            <li><a onclick="showSection('home')">Inici</a></li>
-            <li><a onclick="showSection('cursos')">Cursos</a></li>
-            <li><a onclick="showSection('apunts')">Apunts</a></li>
-            <li><a onclick="showSection('contacte')">Contacte</a></li>
+            <li><a onclick="showSection('home')">INICI</a></li>
+            <li><a onclick="showSection('cursos')">CURS</a></li>
+            <li><a onclick="showSection('apunts')">APUNTS</a></li>
+            <li><a onclick="showSection('contacte')">CONTACTE</a></li>
         </ul>
         <button class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.8rem;" onclick="showSection('contacte')">Aplica ara</button>
     </nav>
@@ -124,7 +124,7 @@
                 <div class="hero-tag">✨ Nova Convocatòria: Març 2026</div>
                 <h1 class="hero-title">Apunta al cim de la <span>Tecnologia.</span></h1>
                 <p style="font-size: 1.25rem; color: var(--text-light); margin-bottom: 3rem; max-width: 500px;">
-                    CodeLab és l'acceleradora de talent digital on transformem curiositat en domini tècnic absolut. Submergeix-te en un entorn de laboratori real.
+                    CodeLab és l'empresa indicada per aprendre a programar amb les noves tecnologies.
                 </p>
                 <div style="display: flex; gap: 1rem;">
                     <button class="btn btn-primary" onclick="showSection('cursos')">Explorar Programes</button>
@@ -190,12 +190,12 @@
         <div class="grid" id="course-grid">
             <div class="course-card" data-cat="frontend">
                 <span class="level">Nivell: Junior</span>
-                <h3>Frontend Architecture</h3>
-                <p>Domina l'art de crear interfícies complexes i escalables.</p>
+                <h3>HTML + CSS </h3>
+                <p>En aquest curs apendrem a crear pàgines web i personalitzar-les</p>
                 <ul>
                     <li>HTML5 Semàntic & Accessibilitat</li>
                     <li>CSS Expert: Grid, Animations, Sass</li>
-                    <li>React.js & Next.js 15</li>
+                    <li>Programació automatitzada amb IA</li>
                 </ul>
                 <div class="price-box">
                     <span style="font-size: 2.5rem; font-weight: 800;" class="price-val" data-monthly="75">75€</span><span style="color: var(--text-light);">/mes</span>
@@ -205,11 +205,10 @@
 
             <div class="course-card" data-cat="backend">
                 <span class="level">Nivell: Mitjà</span>
-                <h3>Python Data Science</h3>
-                <p>Anàlisi, IA i automatització amb el llenguatge del futur.</p>
+                <h3>Python</h3>
+                <p>En aquest curs apendrem a programar python d'una forma divertida i dinamica</p>
                 <ul>
                     <li>Lògica de Programació Pro</li>
-                    <li>Pandas, NumPy & Visualització</li>
                     <li>Integració amb IAs (OpenAI API)</li>
                 </ul>
                 <div class="price-box">
@@ -220,8 +219,8 @@
 
             <div class="course-card" data-cat="backend">
                 <span class="level">Nivell: Avançat</span>
-                <h3>Fullstack JavaScript</h3>
-                <p>Crea aplicacions web completes d'extrem a extrem.</p>
+                <h3>JavaScript</h3>
+                <p>En aquest curs apendrem a programar amb JavaScript</p>
                 <ul>
                     <li>Node.js & Express</li>
                     <li>MongoDB & PostgreSQL</li>
@@ -236,24 +235,24 @@
     </section>
 
     <section id="apunts">
-        <h2 style="font-size: 3rem; margin-bottom: 4rem; text-align: center;">Biblioteca de Recursos</h2>
+        <h2 style="font-size: 3rem; margin-bottom: 4rem; text-align: center;">Apunts per alumnes del curs</h2>
         <div class="grid">
             <div class="course-card">
                 <span style="font-size: 2rem;">📄</span>
-                <h3>Cheat Sheet CSS 2026</h3>
-                <p>Totes les propietats de disseny modern en un sol PDF interactiu.</p>
+                <h3>HTML + CSS</h3>
+                <p>Tots els apunts d'aquest curs estan concentrats en un sol PDF.</p>
                 <button class="btn btn-white" style="margin-top: 1rem;" onclick="notif('Descarregant Guia CSS...')">Descarregar</button>
             </div>
             <div class="course-card">
                 <span style="font-size: 2rem;">🐍</span>
-                <h3>Python for Beginners</h3>
-                <p>Un quadern de Jupyter amb els 50 conceptes clau per començar.</p>
+                <h3>Python</h3>
+                <p>Tots els apunts d'aquest curs estan concentrats en un sol PDF.</p>
                 <button class="btn btn-white" style="margin-top: 1rem;" onclick="notif('Preparant Quadern Python...')">Obrir Recurs</button>
             </div>
             <div class="course-card">
                 <span style="font-size: 2rem;">⚡</span>
-                <h3>React Hooks Guide</h3>
-                <p>Apunts sobre useEffect, useState i Custom Hooks.</p>
+                <h3>JavaScript</h3>
+                <p>Tots els apunts d'aquest curs estan concentrats en un sol PDF.</p>
                 <button class="btn btn-white" style="margin-top: 1rem;" onclick="notif('Descarregant Guia React...')">Llegir ara</button>
             </div>
         </div>
@@ -265,9 +264,9 @@
                 <h2 style="font-size: 3.5rem; line-height: 1; letter-spacing: -2px; margin-bottom: 2rem;">Parlem de la teva <span>carrera.</span></h2>
                 <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 3rem;">Té alguna pregunta sobre el finançament, les hores o el material? Escriu-nos!</p>
                 <div style="background: var(--bg); padding: 2rem; border-radius: 20px;">
-                    <p><strong>📍 Localització:</strong> Edifici Innovació, Barcelona</p>
-                    <p><strong>✉️ Email:</strong> hello@codelab.cat</p>
-                    <p><strong>📱 WhatsApp:</strong> +34 699 00 00 00</p>
+                    <p><strong>📍 Població:</strong> Carrer Tarragona, 3</p>
+                    <p><strong>✉️ Email:</strong> pereizel06@gmail.com</p>
+                    <p><strong>📱 WhatsApp:</strong> +34 999 99 99 99</p>
                 </div>
             </div>
             <form onsubmit="submitForm(event)">
