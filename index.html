@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLab | Advanced Tech Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066B2;
+            --primary-light: #00A3FF;
+            --secondary: #1A1F24;
+            --accent: #FFD700;
+            --bg: #F8FAFC;
+            --white: #ffffff;
+            --text-dark: #0F172A;
+            --text-light: #64748B;
+            --border: rgba(0, 102, 178, 0.1);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        /* Barra de progrés superior */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--primary); width: 0%; z-index: 2000; transition: width 0.2s; }
+
+        /* Background Decor */
+        .decor-blob { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.4; }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--primary); }
+        .blob-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: var(--primary-light); }
+
+        /* Navegació */
+        nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 1rem 8%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
+        .logo { font-weight: 800; font-size: 1.8rem; letter-spacing: -1.5px; color: var(--secondary); cursor: pointer; }
+        .logo span { color: var(--primary); }
+        nav ul { display: flex; list-style: none; gap: 2.5rem; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 700; font-size: 0.9rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; }
+        nav a:hover { color: var(--primary); }
+
+        /* Seccions */
+        section { display: none; padding: 80px 8% 120px; max-width: 1400px; margin: 0 auto; min-height: 80vh; }
+        section.active { display: block; animation: fadeInUp 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Hero Modern */
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding-top: 40px; }
+        .hero-tag { display: inline-block; padding: 6px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 100px; font-weight: 800; font-size: 0.75rem; color: var(--primary); margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); }
+        .hero-title { font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -3px; margin-bottom: 2rem; }
+        .hero-title span { color: var(--primary); position: relative; }
+        .hero-title span::after { content: ""; position: absolute; bottom: 10px; left: 0; width: 100%; height: 8px; background: var(--primary-light); opacity: 0.2; z-index: -1; }
+        
+        /* Buttons */
+        .btn { padding: 1.2rem 2.5rem; border-radius: 14px; font-weight: 800; cursor: pointer; border: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-family: inherit; font-size: 1rem; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-primary { background: var(--primary); color: var(--white); box-shadow: 0 15px 30px rgba(0, 102, 178, 0.2); }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 102, 178, 0.3); background: var(--secondary); }
+        .btn-white { background: var(--white); color: var(--secondary); border: 1px solid var(--border); }
+        .btn-white:hover { background: var(--bg); border-color: var(--primary); }
+
+        /* Grid de Cursos amb Filtre */
+        .filter-container { display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem; }
+        .filter-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid var(--border); background: white; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .course-card { background: var(--white); border-radius: 30px; border: 1px solid var(--border); padding: 3rem; transition: 0.5s; position: relative; overflow: hidden; }
+        .course-card:hover { transform: translateY(-15px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .course-card .level { position: absolute; top: 30px; right: 30px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-light); }
+        .course-card h3 { font-size: 1.8rem; margin-bottom: 1rem; letter-spacing: -1px; }
+        .course-card ul { list-style: none; margin: 2rem 0; }
+        .course-card li { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; font-weight: 500; font-size: 0.95rem; }
+        .course-card li::before { content: "→"; color: var(--primary); font-weight: 800; }
+
+        /* Pricing Toggle */
+        .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 3rem; }
+        .toggle-switch { position: relative; width: 60px; height: 30px; background: #ddd; border-radius: 15px; cursor: pointer; }
+        .toggle-ball { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; background: white; border-radius: 50%; transition: 0.3s; }
+        .toggle-switch.active { background: var(--primary); }
+        .toggle-switch.active .toggle-ball { left: 33px; }
+
+        /* Testimonials */
+        .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+        .testi-card { background: rgba(255,255,255,0.5); padding: 2rem; border-radius: 20px; font-style: italic; border: 1px solid var(--border); }
+        .testi-author { margin-top: 1.5rem; display: flex; align-items: center; gap: 12px; font-style: normal; }
+        .testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border); }
+
+        /* Contact Section */
+        .contact-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; background: var(--white); padding: 4rem; border-radius: 40px; border: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+        .form-input { width: 100%; padding: 1.2rem; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); margin-bottom: 1.5rem; font-family: inherit; transition: 0.3s; }
+        .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
+
+        /* Toast & Footer */
+        #toast { position: fixed; bottom: 30px; right: 30px; background: var(--secondary); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 700; z-index: 3000; display: none; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        footer { background: var(--secondary); color: white; padding: 80px 8% 40px; text-align: center; }
+
+        @media (max-width: 1000px) {
+            .hero-grid, .contact-container, .testimonial-grid { grid-template-columns: 1fr; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div class="decor-blob blob-1"></div>
+    <div class="decor-blob blob-2"></div>
+    <div id="toast"></div>
+
+    <nav>
+        <div class="logo" onclick="showSection('home')">Code<span>Lab</span></div>
+        <ul>
+            <li><a onclick="showSection('home')">Inici</a></li>
+            <li><a onclick="showSection('cursos')">Cursos</a></li>
+            <li><a onclick="showSection('apunts')">Apunts</a></li>
+            <li><a onclick="showSection('contacte')">Contacte</a></li>
+        </ul>
+        <button class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.8rem;" onclick="showSection('contacte')">Aplica ara</button>
+    </nav>
+
+    <section id="home" class="active">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <div class="hero-tag">✨ Nova Convocatòria: Març 2026</div>
+                <h1 class="hero-title">Apunta al cim de la <span>Tecnologia.</span></h1>
+                <p style="font-size: 1.25rem; color: var(--text-light); margin-bottom: 3rem; max-width: 500px;">
+                    CodeLab és l'acceleradora de talent digital on transformem curiositat en domini tècnic absolut. Submergeix-te en un entorn de laboratori real.
+                </p>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="showSection('cursos')">Explorar Programes</button>
+                    <button class="btn btn-white" onclick="showSection('apunts')">Veure Recursos</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div style="background: white; padding: 2rem; border-radius: 30px; box-shadow: var(--shadow-lg); border: 1px solid var(--border);">
+                    <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #FF5F56;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #FFBD2E;"></div>
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #27C93F;"></div>
+                    </div>
+                    <code style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--primary);">
+                        <span style="color: #64748B;">// El teu futur comença aquí</span><br>
+                        <span style="color: #0F172A; font-weight: 800;">const</span> developer = {<br>
+                        &nbsp;&nbsp;name: <span style="color: #22C55E;">'Tu'</span>,<br>
+                        &nbsp;&nbsp;skills: [<span style="color: #22C55E;">'HTML'</span>, <span style="color: #22C55E;">'JS'</span>, <span style="color: #22C55E;">'Python'</span>],<br>
+                        &nbsp;&nbsp;status: <span style="color: #22C55E;">'Learning'</span><br>
+                        };<br><br>
+                        <span style="color: #0066B2;">codelab.ignite(developer);</span>
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-grid" style="margin-top: 8rem;">
+            <div class="testi-card">
+                "La millor decisió. He passat de zero a treballar com a Junior en només 6 mesos."
+                <div class="testi-author"><div class="testi-avatar"></div> <strong>Marc S.</strong> - Frontend Dev</div>
+            </div>
+            <div class="testi-card">
+                "El suport dels mentors és realment personalitzat. No et sents mai perdut."
+                <div class="testi-author"><div class="testi-avatar"></div> <strong>Anna M.</strong> - Data Analyst</div>
+            </div>
+            <div class="testi-card">
+                "Contingut actualitzat al 2026. Res de temaris obsolets. 100% recomanat."
+                <div class="testi-author"><div class="testi-avatar"></div> <strong>Pol R.</strong> - Python Dev</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cursos">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 3.5rem; letter-spacing: -2px;">Pla d'Estudis</h2>
+            <p style="color: var(--text-light); font-size: 1.2rem;">Escull el teu camí d'especialització.</p>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterCursos('all', this)">Tots</button>
+            <button class="filter-btn" onclick="filterCursos('frontend', this)">Frontend</button>
+            <button class="filter-btn" onclick="filterCursos('backend', this)">Backend</button>
+        </div>
+
+        <div class="pricing-toggle">
+            <span>Mensual</span>
+            <div class="toggle-switch" onclick="togglePricing(this)">
+                <div class="toggle-ball"></div>
+            </div>
+            <span>Anual <strong style="color: var(--primary);">(-20%)</strong></span>
+        </div>
+
+        <div class="grid" id="course-grid">
+            <div class="course-card" data-cat="frontend">
+                <span class="level">Nivell: Junior</span>
+                <h3>Frontend Architecture</h3>
+                <p>Domina l'art de crear interfícies complexes i escalables.</p>
+                <ul>
+                    <li>HTML5 Semàntic & Accessibilitat</li>
+                    <li>CSS Expert: Grid, Animations, Sass</li>
+                    <li>React.js & Next.js 15</li>
+                </ul>
+                <div class="price-box">
+                    <span style="font-size: 2.5rem; font-weight: 800;" class="price-val" data-monthly="75">75€</span><span style="color: var(--text-light);">/mes</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 2rem;" onclick="applyToCourse('Frontend Architecture')">Vull Inscriure'm</button>
+            </div>
+
+            <div class="course-card" data-cat="backend">
+                <span class="level">Nivell: Mitjà</span>
+                <h3>Python Data Science</h3>
+                <p>Anàlisi, IA i automatització amb el llenguatge del futur.</p>
+                <ul>
+                    <li>Lògica de Programació Pro</li>
+                    <li>Pandas, NumPy & Visualització</li>
+                    <li>Integració amb IAs (OpenAI API)</li>
+                </ul>
+                <div class="price-box">
+                    <span style="font-size: 2.5rem; font-weight: 800;" class="price-val" data-monthly="90">90€</span><span style="color: var(--text-light);">/mes</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 2rem;" onclick="applyToCourse('Python Data Science')">Vull Inscriure'm</button>
+            </div>
+
+            <div class="course-card" data-cat="backend">
+                <span class="level">Nivell: Avançat</span>
+                <h3>Fullstack JavaScript</h3>
+                <p>Crea aplicacions web completes d'extrem a extrem.</p>
+                <ul>
+                    <li>Node.js & Express</li>
+                    <li>MongoDB & PostgreSQL</li>
+                    <li>Deploy & Cloud (Vercel/AWS)</li>
+                </ul>
+                <div class="price-box">
+                    <span style="font-size: 2.5rem; font-weight: 800;" class="price-val" data-monthly="120">120€</span><span style="color: var(--text-light);">/mes</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 2rem;" onclick="applyToCourse('Fullstack JavaScript')">Vull Inscriure'm</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="apunts">
+        <h2 style="font-size: 3rem; margin-bottom: 4rem; text-align: center;">Biblioteca de Recursos</h2>
+        <div class="grid">
+            <div class="course-card">
+                <span style="font-size: 2rem;">📄</span>
+                <h3>Cheat Sheet CSS 2026</h3>
+                <p>Totes les propietats de disseny modern en un sol PDF interactiu.</p>
+                <button class="btn btn-white" style="margin-top: 1rem;" onclick="notif('Descarregant Guia CSS...')">Descarregar</button>
+            </div>
+            <div class="course-card">
+                <span style="font-size: 2rem;">🐍</span>
+                <h3>Python for Beginners</h3>
+                <p>Un quadern de Jupyter amb els 50 conceptes clau per començar.</p>
+                <button class="btn btn-white" style="margin-top: 1rem;" onclick="notif('Preparant Quadern Python...')">Obrir Recurs</button>
+            </div>
+            <div class="course-card">
+                <span style="font-size: 2rem;">⚡</span>
+                <h3>React Hooks Guide</h3>
+                <p>Apunts sobre useEffect, useState i Custom Hooks.</p>
+                <button class="btn btn-white" style="margin-top: 1rem;" onclick="notif('Descarregant Guia React...')">Llegir ara</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacte">
+        <div class="contact-container">
+            <div>
+                <h2 style="font-size: 3.5rem; line-height: 1; letter-spacing: -2px; margin-bottom: 2rem;">Parlem de la teva <span>carrera.</span></h2>
+                <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 3rem;">Té alguna pregunta sobre el finançament, les hores o el material? Escriu-nos!</p>
+                <div style="background: var(--bg); padding: 2rem; border-radius: 20px;">
+                    <p><strong>📍 Localització:</strong> Edifici Innovació, Barcelona</p>
+                    <p><strong>✉️ Email:</strong> hello@codelab.cat</p>
+                    <p><strong>📱 WhatsApp:</strong> +34 699 00 00 00</p>
+                </div>
+            </div>
+            <form onsubmit="submitForm(event)">
+                <input type="text" class="form-input" placeholder="El teu nom" required>
+                <input type="email" class="form-input" placeholder="Email de contacte" required>
+                <select class="form-input">
+                    <option>Interessat en...</option>
+                    <option>Frontend Architecture</option>
+                    <option>Python Data Science</option>
+                    <option>Fullstack JavaScript</option>
+                </select>
+                <textarea class="form-input" rows="5" placeholder="Com et podem ajudar?"></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Sol·licitud</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo" style="color: white; margin-bottom: 2rem;">Code<span>Lab</span></div>
+        <p style="opacity: 0.5; font-size: 0.9rem;">&copy; 2026 CodeLab Educational Hub. Tots els drets reservats.<br>Transformant línies de codi en futurs brillants.</p>
+    </footer>
+
+    <script>
+        // Barra de progrés de lectura
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        // Navegació SPA
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Sistema de Preus Dinàmic (Anual vs Mensual)
+        let isAnnual = false;
+        function togglePricing(el) {
+            el.classList.toggle('active');
+            isAnnual = !isAnnual;
+            document.querySelectorAll('.price-val').forEach(p => {
+                let monthly = parseInt(p.getAttribute('data-monthly'));
+                if(isAnnual) {
+                    let annualVal = Math.round((monthly * 12) * 0.8); // 20% descompte
+                    p.innerText = annualVal + "€";
+                    p.nextElementSibling.innerText = "/any";
+                } else {
+                    p.innerText = monthly + "€";
+                    p.nextElementSibling.innerText = "/mes";
+                }
+            });
+            notif(isAnnual ? "Tarifa Anual aplicada!" : "Tarifa Mensual aplicada!");
+        }
+
+        // Filtre de Cursos
+        function filterCursos(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.course-card').forEach(card => {
+                if(cat === 'all' || card.getAttribute('data-cat') === cat) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Notificacions Toast
+        function notif(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        // Formulari
+        function submitForm(e) {
+            e.preventDefault();
+            notif("✅ Sol·licitud enviada! Rebràs un email aviat.");
+            e.target.reset();
+        }
+
+        // Funció per matricular-se directament
+        function applyToCourse(course) {
+            showSection('contacte');
+            document.querySelector('select').value = course;
+            notif("S'ha seleccionat: " + course);
+        }
+    </script>
+</body>
+</html>
